@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prompt_password">Пароль</string>
+    <string name="prompt_login">Логин</string>
+    <string name="sign_in">Войти</string>
+</resources>
