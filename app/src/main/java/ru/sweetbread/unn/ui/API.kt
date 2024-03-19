@@ -7,6 +7,7 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.parameters
 import org.json.JSONArray
 import org.json.JSONObject
+import ru.sweetbread.unn.R
 import ru.sweetbread.unn.ui.layout.LoginData
 import ru.sweetbread.unn.ui.layout.client
 import java.time.LocalDate
@@ -26,9 +27,11 @@ enum class Type(val s: String) {
     Auditorium("auditorium")
 }
 
-enum class LecturerRank(val s: String) {
-    Lecturer("Lecturer"),
-    SLecturer("Senior Lecturer")
+enum class LecturerRank(val id: Int) {
+    Assistant(R.string.assistant),
+    Lecturer(R.string.lecturer),
+    SLecturer(R.string.slecturer),
+    AProfessor(R.string.aprofessor)
 }
 
 class ScheduleUnit(val oid: Int,
@@ -119,7 +122,7 @@ private suspend fun getMyself(login: String) {
     )
 }
 
-suspend fun getSchedule(type: Type = Type.Student, id: String = ME.id, start: LocalDate, finish: LocalDate): ArrayList<ScheduleUnit> {
+suspend fun getSchedule(type: Type = ME.type, id: String = ME.id, start: LocalDate, finish: LocalDate): ArrayList<ScheduleUnit> {
     val unnDatePattern = DateTimeFormatter.ofPattern("yyyy.MM.dd")
 
     val r = client.get("$ruzapiURL/schedule/${type.s}/$id") {
@@ -144,7 +147,9 @@ suspend fun getSchedule(type: Type = Type.Student, id: String = ME.id, start: Lo
                     oid = lecturer.getInt("lecturerOid"),
                     uid = lecturer.getString("lecturerUID"),
                     rank = when (lecturer.getString("lecturer_rank")) {
+                        "АССИСТ" -> LecturerRank.Assistant
                         "СТПРЕП" -> LecturerRank.SLecturer
+                        "ДОЦЕНТ" -> LecturerRank.AProfessor
                         else -> LecturerRank.Lecturer
                     }
                 )

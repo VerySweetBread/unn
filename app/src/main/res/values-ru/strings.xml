@@ -3,4 +3,11 @@
     <string name="prompt_password">Пароль</string>
     <string name="prompt_login">Логин</string>
     <string name="sign_in">Войти</string>
+    <string name="assistant">Ассистент</string>
+    <string name="lecturer">Преподаватель</string>
+    <string name="slecturer">Старший Преподаватель</string>
+    <string name="aprofessor">Доцент</string>
+    <string name="auditorium">Аудитория</string>
+    <string name="building">Здание</string>
+    <string name="floor">Этаж</string>
 </resources>

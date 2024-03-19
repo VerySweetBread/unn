@@ -5,5 +5,12 @@
     <string name="prompt_login">Login</string>
     <string name="prompt_password">Password</string>
     <string name="sign_in">Sign in</string>
+    <string name="assistant">Assistant</string>
+    <string name="lecturer">Lecturer</string>
+    <string name="slecturer">Senior Lecturer</string>
+    <string name="aprofessor">Assistant professor</string>
+    <string name="auditorium">Auditorium</string>
+    <string name="building">Building</string>
+    <string name="floor">Floor</string>
     <!--    <string name="login_failed">"Login failed"</string>-->
 </resources>
