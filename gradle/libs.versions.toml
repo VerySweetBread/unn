@@ -1,6 +1,7 @@
 [versions]
 acraHttp = "5.11.3"
 agp = "8.3.1"
+coilCompose = "2.6.0"
 compose = "2.5.0"
 coreSplashscreen = "1.0.1"
 datastorePreferences = "1.0.0"
@@ -33,6 +34,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 compose = { module = "com.kizitonwose.calendar:compose", version.ref = "compose" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

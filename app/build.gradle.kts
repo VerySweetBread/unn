@@ -84,6 +84,7 @@ dependencies {
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.logging)
+    implementation(libs.coil.compose)
 
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.splitties.funpack.android.base.with.views.dsl)

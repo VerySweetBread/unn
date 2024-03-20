@@ -17,7 +17,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,9 +32,11 @@ import io.ktor.client.plugins.cache.HttpCache
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import ru.sweetbread.unn.ui.composes.Blogposts
 import ru.sweetbread.unn.ui.composes.Schedule
 import ru.sweetbread.unn.ui.theme.UNNTheme
 import splitties.toast.toast
+import java.io.File
 
 val client = HttpClient {
     install(HttpCache)
@@ -59,34 +60,41 @@ val client = HttpClient {
     }
 }
 
+val cacheDir = File("/data/data/ru.sweetbread.unn/files/cache")
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("mkdir", cacheDir.mkdir().toString())
 
         setContent {
             UNNTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     val navController = rememberNavController()
-                    var route by remember { mutableStateOf("home") }
+                    var route by remember { mutableStateOf("portal/blogposts") }
 
                     Scaffold(
                         bottomBar = {
                             NavigationBar {
                                 NavigationBarItem(
-                                    onClick = { toast("Not implemented") },
+                                    onClick = {
+                                        route = "portal/blogposts"
+                                        navController.navigate(route)
+                                    },
                                     icon = {
                                         Icon(
                                             Icons.Filled.Home,
                                             contentDescription = "Home"
                                         )
                                     },
-                                    selected = route.startsWith("home")
+                                    selected = route.startsWith("portal/")
                                 )
 
                                 NavigationBarItem(
                                     onClick = {
-                                        navController.navigate("journal/schedule")
-                                        route = "journal/schedule" },
+                                        route = "journal/schedule"
+                                        navController.navigate(route)
+                                    },
                                     icon = {
                                         Icon(
                                             Icons.Filled.DateRange,
@@ -110,9 +118,9 @@ class MainActivity : ComponentActivity() {
                         }
                     ) {innerPadding ->
                         Box(Modifier.padding(innerPadding)) {
-                            NavHost(navController, startDestination = "home/blogposts") {
-                                composable("home/blogposts") {
-                                    Text("Not implemented")
+                            NavHost(navController, startDestination = "portal/blogposts") {
+                                composable("portal/blogposts") {
+                                    Blogposts()
                                 }
                                 composable("journal/schedule") {
                                     Schedule()
