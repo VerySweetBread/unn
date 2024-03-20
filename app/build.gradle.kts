@@ -83,4 +83,7 @@ dependencies {
 
     implementation(libs.compose)
 
+    implementation(libs.commons.text)
+
+    implementation(libs.acra.http)
 }
