@@ -36,14 +36,30 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.sweetbread.unn.R
 import ru.sweetbread.unn.ui.auth
 import ru.sweetbread.unn.ui.theme.UNNTheme
 import splitties.activities.start
+import splitties.preferences.Preferences
+
+object LoginData : Preferences("loginData") {
+    var login by stringPref("login", "")
+    var password by stringPref("password", "")
+}
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if ((LoginData.login != "") and (LoginData.password != ""))
+            runBlocking {
+                if (auth()) {
+                    start<MainActivity>()
+                    finish()
+                }
+            }
+
         setContent {
             UNNTheme {
                 Surface(
@@ -62,13 +78,14 @@ class LoginActivity : ComponentActivity() {
                             LoginData.login = login
                             LoginData.password = password
                             start<MainActivity>()
+                            finish()
                         }, {
                             scope.launch {
 
                                 snackbarHostState
                                     .showSnackbar(
                                         message = "Error",
-                                        duration = SnackbarDuration.Long
+                                        duration = SnackbarDuration.Short
                                     )
                             }
                         })
