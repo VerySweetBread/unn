@@ -24,9 +24,10 @@ lifecycleLivedataKtx = "2.7.0"
 lifecycleViewmodelKtx = "2.7.0"
 activity = "1.8.2"
 navigationCompose = "2.7.7"
+richeditorCompose = "1.0.0-rc01"
 secretsGradlePlugin = "2.0.1"
 splittiesFunPackAndroidBaseWithViewsDsl = "3.0.0"
-commonsText = "1.11.0"
+kefirbb = "1.5"
 
 [libraries]
 acra-http = { module = "ch.acra:acra-http", version.ref = "acraHttp" }
@@ -59,9 +60,10 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 splitties-funpack-android-base-with-views-dsl = { module = "com.louiscad.splitties:splitties-fun-pack-android-base-with-views-dsl", version.ref = "splittiesFunPackAndroidBaseWithViewsDsl" }
-commons-text = { group = "org.apache.commons", name = "commons-text", version.ref = "commonsText" }
+kefirbb = { group = "org.kefirsf", name = "kefirbb", version.ref = "kefirbb" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

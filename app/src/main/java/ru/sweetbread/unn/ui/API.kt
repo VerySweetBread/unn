@@ -6,7 +6,6 @@ import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.parameters
-import org.apache.commons.text.StringEscapeUtils
 import org.json.JSONArray
 import org.json.JSONObject
 import ru.sweetbread.unn.R
@@ -267,7 +266,7 @@ suspend fun getBlogposts(): ArrayList<Post> {
                     el.getString("DATE_PUBLISH"),
                     DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'+03:00'")
                 ),
-                content = StringEscapeUtils.escapeHtml4(el.getString("DETAIL_TEXT"))
+                content = el.getString("DETAIL_TEXT")
             )
         )
     }

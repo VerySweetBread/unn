@@ -91,7 +91,7 @@ dependencies {
 
     implementation(libs.compose)
 
-    implementation(libs.commons.text)
+    implementation(libs.kefirbb)
 
     implementation(libs.acra.http)
 }

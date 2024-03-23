@@ -1,5 +1,6 @@
 package ru.sweetbread.unn.ui.composes
 
+import android.text.util.Linkify
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -27,17 +29,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.kefirsf.bb.BBProcessorFactory
+import org.kefirsf.bb.TextProcessor
 import ru.sweetbread.unn.R
 import ru.sweetbread.unn.ui.ImageSet
 import ru.sweetbread.unn.ui.Post
@@ -51,6 +60,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+
 
 val defUser = User(
     null,
@@ -153,13 +163,16 @@ fun UserItem(modifier: Modifier = Modifier, user: User, info: String? = null) {
 @NonRestartableComposable
 fun PostItem(modifier: Modifier = Modifier, post: Post) {
     var user: User? by remember { mutableStateOf(null) }
+    val processor = remember { BBProcessorFactory.getInstance().create() }
+    var html: String by remember { mutableStateOf("") }
+
 
     LaunchedEffect(post) {
+        html = toHtml(processor, post)
         user = getUserByBitrixId(post.authorId)
     }
 
     Column(modifier.padding(16.dp)) {
-        Log.d("FUUUUUUUUUUUCK", user.toString())
         if (user != null)
             UserItem(user = user!!)
         else
@@ -171,9 +184,41 @@ fun PostItem(modifier: Modifier = Modifier, post: Post) {
                 trackColor = MaterialTheme.colorScheme.secondary,
             )
 
-        Text(text = post.content)
-        Text(text = post.date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+        AndroidView(
+            factory = {
+                MaterialTextView(it).apply {
+                    autoLinkMask = Linkify.WEB_URLS
+                    linksClickable = true
+                    setLinkTextColor(Color.White.toArgb())
+                }
+            },
+            update = {
+                it.maxLines = 25
+                it.text = HtmlCompat.fromHtml(html, 0)
+            }
+        )
+
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 16.dp),
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        Text(text = post.date.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)))
     }
+}
+
+private fun toHtml(
+    processor: TextProcessor,
+    post: Post
+): String {
+    val html = processor.process(post.content)
+    return html.replace("""\[URL=(.+)](.+)\[/URL]""".toRegex()) {
+        Log.d("replace", it.groups.toString())
+        "<a href='${it.groups[1]?.value}'>${it.groups[2]?.value}</a>"
+    }.replace("""(\[FONT=.+]|\[CENTER])(.+)(\[/FONT]|\[/CENTER])""".toRegex()) {
+        it.groups[2]?.value.toString()
+    }.replace("""\[IMG .+].+\[/IMG]""".toRegex(), "")
 }
 
 
